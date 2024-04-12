@@ -19,14 +19,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+//for JUnit 5, we need to use @ExtendWith
 @ExtendWith(MockitoExtension.class)
 class ArtifactServiceTest {
+    //@Mock defines a Mockito mock object for ArtifactRepository
     @Mock
     ArtifactRepository artifactRepository;
 
     @Mock
     IdWorker idWorker;
 
+    //@Mock defines a Mockito mock object for ArtifactService
     @InjectMocks
     ArtifactService artifactService;
 
@@ -55,6 +58,10 @@ class ArtifactServiceTest {
     void tearDown() {
     }
 
+    /*
+    * for a lot of these, I did not add 'this'
+    * TOO MUCH WORK
+    */
     @Test
     void testFindByIdSuccess() {
         //given: arrange inputs and targets, define behavior of Mock object artifactRepository
@@ -152,7 +159,12 @@ class ArtifactServiceTest {
         oldArtifact.setImageUrl("ImageUrl");
 
         Artifact update = new Artifact();
-        update.setId("1250808601744904192");
+
+        /*
+         * commented it out because front end may not send an ID in request body
+        */
+        //update.setId("1250808601744904192");
+
         update.setName("Invisibility Cloak");
         update.setDescription("A new description.");
         update.setImageUrl("ImageUrl");
@@ -164,7 +176,7 @@ class ArtifactServiceTest {
         Artifact updatedArtifact = artifactService.update("1250808601744904192", update);
 
         //then
-        assertThat(updatedArtifact.getId()).isEqualTo(update.getId());
+        assertThat(updatedArtifact.getId()).isEqualTo("1250808601744904192"); //changed to string literal
         assertThat(updatedArtifact.getDescription()).isEqualTo(update.getDescription());
         verify(artifactRepository, times(1)).findById("1250808601744904192");
         verify(artifactRepository, times(1)).save(oldArtifact);
