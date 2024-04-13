@@ -1,6 +1,7 @@
 package edu.tcu.cs.hogwartsartifactsonline.system.exception;
 
 import edu.tcu.cs.hogwartsartifactsonline.artifact.ArtifactNotFoundException;
+import edu.tcu.cs.hogwartsartifactsonline.hogwartsuser.UserNotFoundException;
 import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.WizardNotFoundException;
@@ -15,9 +16,9 @@ import java.util.*;
 
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
-    @ExceptionHandler({ArtifactNotFoundException.class, WizardNotFoundException.class})
+    @ExceptionHandler({ArtifactNotFoundException.class, WizardNotFoundException.class, UserNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    Result handleArtifactOrWizardNotFoundException(Exception ex) {
+    Result handleArtifactOrWizardOrUserNotFoundException(Exception ex) {
         return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
     }
 
