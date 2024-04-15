@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class HogwartsArtifactsOnlineApplication {
-
+    /*
+    * when logging trying to access the url, the login page appears
+    * issue is that no default password is produced/outputted
+    */
     public static void main(String[] args) {
         SpringApplication.run(HogwartsArtifactsOnlineApplication.class, args);
     }
