@@ -60,11 +60,11 @@ class ArtifactServiceTest {
     void testFindByIdSuccess() {
         //given: arrange inputs and targets, define behavior of Mock object artifactRepository
         /*
-        * "id": "1250808601744904192"
-        * "name": "Invisibility Cloak"
-        * "description": "An invisibility cloak is used to make the wearer invisible."
-        * "imageUrl": "ImageUrl",
-        */
+         * "id": "1250808601744904192"
+         * "name": "Invisibility Cloak"
+         * "description": "An invisibility cloak is used to make the wearer invisible."
+         * "imageUrl": "ImageUrl",
+         */
         Artifact a = new Artifact();
         a.setId("1250808601744904192");
         a.setName("Invisibility Cloak");
@@ -217,7 +217,7 @@ class ArtifactServiceTest {
 
         //when
         assertThrows(ObjectNotFoundException.class, () -> {
-           this.artifactService.delete("1250808601744904192");
+            this.artifactService.delete("1250808601744904192");
         });
 
         //then

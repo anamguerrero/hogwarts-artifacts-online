@@ -246,5 +246,4 @@ public class HogwartsUserControllerIntegrationTest {
                 .andExpect(jsonPath("$.data[0].id").value(1))
                 .andExpect(jsonPath("$.data[0].username").value("john"));
     }
-
 }
