@@ -25,7 +25,6 @@ public class UserController {
         this.userToUserDtoConverter = userToUserDtoConverter;
     }
 
-    //good
     @GetMapping
     public Result findAllUsers() {
         List<HogwartsUser> foundHogwartsUsers = this.userService.findAll();
@@ -39,7 +38,6 @@ public class UserController {
         return new Result(true, StatusCode.SUCCESS, "Find All Success", userDtos);
     }
 
-    //good
     @GetMapping("/{userId}")
     public Result findUserById(@PathVariable Integer userId) {
         HogwartsUser foundHogwartsUser = this.userService.findById(userId);
@@ -47,7 +45,6 @@ public class UserController {
         return new Result(true, StatusCode.SUCCESS, "Find One Success", userDto);
     }
 
-    //good
     /**
      * We are not using UserDto, but User, since we require password.
      *
@@ -61,8 +58,6 @@ public class UserController {
         return new Result(true, StatusCode.SUCCESS, "Add Success", savedUserDto);
     }
 
-    //good
-    //we are not using this to update password, need another changePassword method in this class.
     @PutMapping("/{userId}")
     public Result updateUser(@PathVariable Integer userId, @Valid @RequestBody UserDto userDto) {
         HogwartsUser update = this.userDtoToUserConverter.convert(userDto);
@@ -71,7 +66,6 @@ public class UserController {
         return new Result(true, StatusCode.SUCCESS, "Update Success", updatedUserDto);
     }
 
-    //good
     @DeleteMapping("/{userId}")
     public Result deleteUser(@PathVariable Integer userId) {
         this.userService.delete(userId);
