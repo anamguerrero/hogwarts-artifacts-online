@@ -45,7 +45,7 @@ public class ArtifactService {
     }
 
     public void delete(String artifactId) {
-       this.artifactRepository.findById(artifactId)
+        this.artifactRepository.findById(artifactId)
                 .orElseThrow(() -> new ObjectNotFoundException("artifact", artifactId));
         this.artifactRepository.deleteById(artifactId);
     }
