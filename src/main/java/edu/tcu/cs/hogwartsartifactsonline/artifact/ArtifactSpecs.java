@@ -3,7 +3,6 @@ package edu.tcu.cs.hogwartsartifactsonline.artifact;
 import org.springframework.data.jpa.domain.Specification;
 
 public class ArtifactSpecs {
-
     public static Specification<Artifact> hasId(String providedId) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("id"), providedId);
@@ -23,5 +22,4 @@ public class ArtifactSpecs {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("name")), providedOwnerName.toLowerCase());
     }
-
 }
