@@ -1,7 +1,14 @@
 package edu.tcu.cs.hogwartsartifactsonline.artifact;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.tcu.cs.hogwartsartifactsonline.artifact.dto.ArtifactDto;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.utils.IdWorker;
+import edu.tcu.cs.hogwartsartifactsonline.client.ai.chat.ChatClient;
+import edu.tcu.cs.hogwartsartifactsonline.client.ai.chat.dto.ChatRequest;
+import edu.tcu.cs.hogwartsartifactsonline.client.ai.chat.dto.ChatResponse;
+import edu.tcu.cs.hogwartsartifactsonline.client.ai.chat.dto.Message;
 import edu.tcu.cs.hogwartsartifactsonline.system.exception.ObjectNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.persistence.Id;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -12,10 +19,12 @@ import java.util.List;
 public class ArtifactService {
     private final ArtifactRepository artifactRepository;
     private final IdWorker idWorker;
+    private final ChatClient chatClient;
 
-    public ArtifactService(ArtifactRepository artifactRepository, IdWorker idWorker) {
+    public ArtifactService(ArtifactRepository artifactRepository, IdWorker idWorker, ChatClient chatClient) {
         this.artifactRepository = artifactRepository;
         this.idWorker = idWorker;
+        this.chatClient = chatClient;
     }
 
     public Artifact findById(String artifactId) {
@@ -48,5 +57,23 @@ public class ArtifactService {
         this.artifactRepository.findById(artifactId)
                 .orElseThrow(() -> new ObjectNotFoundException("artifact", artifactId));
         this.artifactRepository.deleteById(artifactId);
+    }
+
+    public String summarize(List<ArtifactDto> artifactDtos) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonArray = objectMapper.writeValueAsString(artifactDtos);
+
+        //prepare the messages for summarizing
+        List<Message> messages = List.of(
+                new Message("system", "Your task is to generate a short summary of a given JSON array in at most 100 words. The summary must include the number of artifacts, each artifact's description, and the ownership information. Don't mention that the summary is from a given JSON array."),
+                new Message("user", jsonArray)
+        );
+
+        ChatRequest chatRequest = new ChatRequest("gpt-4", messages);
+
+        ChatResponse chatResponse = this.chatClient.generate(chatRequest); //tell chatClient to generate a text summary based on the given chatRequest
+
+        //retrieve the AI-generated text and return to the controller
+        return chatResponse.choices().get(0).message().content();
     }
 }
